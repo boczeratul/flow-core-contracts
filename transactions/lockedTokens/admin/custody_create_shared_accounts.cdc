@@ -7,9 +7,9 @@ import LockedTokens from 0xLOCKEDTOKENADDRESS
 /// acount for a user
 
 transaction(
-    partialAdminPublicKey: [UInt8], // Weight: 100
-    partialUserPublicKey: [UInt8], // Weight: 900
-    fullUserPublicKey: [UInt8], // Weight: 1000
+    partialAdminPublicKey: String, // Weight: 100
+    partialUserPublicKey: String, // Weight: 900
+    fullUserPublicKey: String, // Weight: 1000
 )  {
 
     prepare(custodyProvider: AuthAccount) {
@@ -17,10 +17,10 @@ transaction(
         let sharedAccount = AuthAccount(payer: custodyProvider)
         let userAccount = AuthAccount(payer: custodyProvider)
 
-        sharedAccount.addPublicKey(partialAdminPublicKey)
-        sharedAccount.addPublicKey(partialUserPublicKey)
+        sharedAccount.addPublicKey(partialAdminPublicKey.decodeHex())
+        sharedAccount.addPublicKey(partialUserPublicKey.decodeHex())
 
-        userAccount.addPublicKey(fullUserPublicKey)
+        userAccount.addPublicKey(fullUserPublicKey.decodeHex())
 
         let vaultCapability = sharedAccount
             .link<&FlowToken.Vault>(/private/flowTokenVault, target: /storage/flowTokenVault)
